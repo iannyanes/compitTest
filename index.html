@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="index.css" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div id="calendar-widget" manager="136663">
+        <div class="col-sm-12">
+            <div class="box-info full">
+                <div class="manager-index-section-header h4 padd-all">
+                    <img class="img-square-24 img-circle background-color" src="https://static.leverade.com/img/domains/icon-calendar.svg">
+                    <span class="text-color">Calendar</span>
+                </div>
+                <div class="row half-padd-top marginless half-padd-bottom half-padd-left top-bordered">
+                    <div class="col-sm-6 horizontal-paddingless half-padd-right">
+                        <div class="btn-group bootstrap-select dropdown form-control">
+                            <button type="button" class="dropdown-toggle form-control" data-toggle="dropdown">
+                                <span class="filter-option pull-left">{{selected.tournament.name}}</span>&nbsp;
+                                <span v-if="tournaments.length > 1" class="caret"></span>
+                            </button>
+                            <ul v-if="tournaments.length > 1" class="dropdown-menu inner" role="menu">
+                                <li v-for="tournament in tournaments" v-on:click="selectTournament(tournament.id)">
+                                    <a tabindex="0" class="" data-tokens="null">
+                                        <span class="text">{{tournament.name}}</span>
+                                        <span class="fa fa-check check-mark"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 horizontal-paddingless half-padd-right">
+                        <div class="btn-group bootstrap-select dropdown form-control">
+                            <button type="button" class="dropdown-toggle form-control" data-toggle="dropdown">
+                                <span class="filter-option pull-left">{{selected.group.name}}</span>&nbsp;
+                                <span v-if="selected.tournament.groups.length > 1" class="caret"></span>
+                            </button>
+                            <ul v-if="selected.tournament.groups.length > 1" class="dropdown-menu inner" role="menu">
+                                <li v-for="group in selected.tournament.groups" data-original-index="0" class="selected" v-on:click="selectGroup(group.id)">
+                                    <a tabindex="0" class="" data-normalized-text="<span class=&quot;text&quot;>1ª Division Nacional</span>" data-tokens="null">
+                                        <span class="text">{{group.name}}</span>
+                                        <span class="fa fa-check check-mark"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="custom-domain-calendar-widget" >
+                    <div class="ml-table initialized">
+                        <div class="ml-bottom">
+                            <div class="ml-secondary-inputs">
+                                <div class="ml-tertiary-inputs">
+                                    <input name="actual" value="1" type="hidden"> </div>
+                                <div class="table-responsive">
+                                    <table class="table tablestyle-e1d9 tabletype-public">
+                                        <thead>
+                                            <tr>
+                                                <th class="colstyle-equipo-1 ml-trigger">
+                                                    <span>Team 1</span>
+                                                    <input name="column" value="equipo_1.asc" type="hidden">
+                                                </th>
+                                                <th class="colstyle-resultado ml-trigger" ml-controller="https://ligaesplol.com/en/ajax/table-sort-column" ml-source=".ml-table .ml-secondary-inputs"
+                                                    ml-destination=".ml-table .ml-bottom" ml-position="replace">
+                                                    <span>Result</span>
+                                                    <input name="column" value="resultado.asc" type="hidden">
+                                                </th>
+                                                <th class="colstyle-equipo-2 ml-trigger" ml-controller="https://ligaesplol.com/en/ajax/table-sort-column" ml-source=".ml-table .ml-secondary-inputs"
+                                                    ml-destination=".ml-table .ml-bottom" ml-position="replace">
+                                                    <span>Team 2</span>
+                                                    <input name="column" value="equipo_2.asc" type="hidden">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-link="row" class="rowlink">
+                                            <tr v-for="match in selected.round.matches">
+                                                <td class="colstyle-equipo-1">
+                                                    <a href="https://ligaesplol.com/en/tournament/556320/match/62839311/results">
+                                                        <span class="sr-only">Look</span>
+                                                    </a>
+                                                    <img v-bind:src="match.teams[0].avatar" class="img-circle ">
+                                                    <span class="ellipsis">{{match.teams[0].name}}</span>
+                                                </td>
+                                                <td class="colstyle-resultado">
+                                                    <span class="result">{{match.teams[0].score}}&nbsp;–&nbsp;{{match.teams[1].score}}</span>
+                                                </td>
+                                                <td class="colstyle-equipo-2">
+                                                    <span class="ellipsis">{{match.teams[1].name}}</span>
+                                                    <img v-bind:src="match.teams[1].avatar" class="img-circle "> </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="padd half-padd-top half-padd-bottom relative text-center">
+                        <a class="show-more absolute-right half-marg-top half-marg-bottom marg-right" href="https://ligaesplol.com/en/tournament/556320/calendar/1427937/7957574">
+                            Show calendar
+                            <!--
+                    -->
+                            <span class="half-padd-left">
+                                <i class="fa fa-arrow-right"></i>
+                            </span>
+                        </a>
+                        <a v-if="!isFirstRound(selected.round)" class="btn-light paddingless btn btn-default ml-trigger" ml-controller="https://ligaesplol.com/en/ajax/widgets/manager/136663/round-matches-calendar"
+                            ml-destination=".box-info" ml-position="replace">
+                            <i v-on:click="selectPreviousRound(selected.round)" class="fa fa-fw fa-angle-left"></i>
+                            <span class="sr-only">Back</span>
+                        </a> {{selected.round.name}}
+                        <a v-if="!isLastRound(selected.round)" class="btn-light paddingless btn btn-default ml-trigger" ml-controller="https://ligaesplol.com/en/ajax/widgets/manager/136663/round-matches-calendar"
+                            ml-destination=".box-info" ml-position="replace">
+                            <i v-on:click="selectNextRound(selected.round)" class="fa fa-fw fa-angle-right"></i>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <script src="app.js"></script>
+</body>
+
+
+</html>
