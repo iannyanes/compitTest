@@ -63,7 +63,7 @@
                     this.selected.group = this.selected.tournament.groups.find(function (group) {
                         return id === group.id;
                     });
-                    axios.get('https://api.leverade.com/rounds?filter[group_id]=' + id + '&include=matches.results,matches.teams')
+                    axios.get('https://api.leverade.com/rounds?filter[group_id]=' + id + '&include=matches.results,matches.teams,matches.facility')
                         .then(function (response) {
                             return response.data;
                         })
@@ -101,6 +101,8 @@
                                                         return result.relationships.team.data.id === team.id && result.relationships.parent.data.id === match.id;
                                                     })[0].attributes.score
                                                 };
+                                            }).sort(function(a,b){
+                                                return !a.home
                                             })
                                         };
                                     })
@@ -108,7 +110,7 @@
                             });
                             this.selectRound(this.selected.group.rounds.filter(function (round) {
                                 return round.matches.filter(function (match) {
-                                    return match.status === "rest"
+                                    return match.status === "rest" || undefined
                                 }).length > 0 || true;
                             })[0]
                             );
@@ -118,10 +120,10 @@
                     this.selected.round = round ? round : this.selected.round;
                 },
                 isLastRound: function (round) {
-                    return this.selected.group.rounds.indexOf(round) === this.selected.group.rounds.length - 1;
+                    return this.selected.group.rounds ? this.selected.group.rounds.indexOf(round) === this.selected.group.rounds.length - 1 : false;
                 },
                 isFirstRound: function (round) {
-                    return this.selected.group.rounds.indexOf(round) === 0;
+                    return this.selected.group.rounds ? this.selected.group.rounds.indexOf(round) === 0 : false;
                 },
                 selectNextRound: function (round) {
                     this.selectRound(this.selected.group.rounds[this.selected.group.rounds.indexOf(round) + 1] ? this.selected.group.rounds[this.selected.group.rounds.indexOf(round) + 1] : this.selected.round);

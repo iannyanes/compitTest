@@ -23,7 +23,7 @@
 
 <body>
     <div id="calendar-widget" manager="136663">
-        <div class="col-sm-12">
+        <div class="col-sm-12" v-if="selected.group.rounds?selected.group.rounds.length>0:true">
             <div class="box-info full">
                 <div class="manager-index-section-header h4 padd-all">
                     <img class="img-square-24 img-circle background-color" src="https://static.leverade.com/img/domains/icon-calendar.svg">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="custom-domain-calendar-widget" >
+                <div id="custom-domain-calendar-widget">
                     <div class="ml-table initialized">
                         <div class="ml-bottom">
                             <div class="ml-secondary-inputs">
@@ -99,7 +99,8 @@
                                                     <span class="ellipsis">{{match.teams[0].name}}</span>
                                                 </td>
                                                 <td class="colstyle-resultado">
-                                                    <span class="result">{{match.teams[0].score}}&nbsp;–&nbsp;{{match.teams[1].score}}</span>
+                                                    <span v-if="match.status==='finished'" class="result">{{match.teams[0].score}}&nbsp;–&nbsp;{{match.teams[1].score}}</span>
+                                                    <span v-else class="result">{{match.date}}</span>
                                                 </td>
                                                 <td class="colstyle-equipo-2">
                                                     <span class="ellipsis">{{match.teams[1].name}}</span>
